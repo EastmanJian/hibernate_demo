@@ -32,6 +32,7 @@
         </id>
         <!--
           The two <property/> elements declare the remaining two persistent properties of the Event class: date and title.
+
           The date property mapping includes the column attribute, but the title does not. In the absence of a column
           attribute, Hibernate uses the property name as the column name. This is appropriate for title, but since date
           is a reserved keyword in most databases, you need to specify a non-reserved word for the column name.

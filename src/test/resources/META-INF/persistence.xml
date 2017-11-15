@@ -1,0 +1,40 @@
+<!--
+ JPA defines a different bootstrap process that uses its own configuration file named persistence.xml.
+ In Java™ SE environments the persistence provider (Hibernate in this case) is required to locate all JPA configuration
+ files by classpath lookup of the META-INF/persistence.xml resource name.
+-->
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+             http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+
+    <!--
+      persistence.xml files should provide a unique name for each "persistence unit". Applications use this name to
+      reference the configuration when obtaining an javax.persistence.EntityManagerFactory reference.
+    -->
+    <persistence-unit name="org.hibernate.tutorial.jpa">
+        <description>
+            Persistence unit for the JPA tutorial of the Hibernate Getting Started Guide
+        </description>
+
+        <!-- the <class/> element functions the same as we saw the <mapping/> in The Hibernate configuration file.-->
+        <class>org.hibernate.tutorial.em.Event</class>
+
+        <properties>
+            <!--
+              The javax.persistence-prefixed varieties are used when possible.
+              The remaining Hibernate-specific configuration setting names are now prefixed with hibernate..
+            -->
+            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1;MVCC=TRUE" />
+            <property name="javax.persistence.jdbc.user" value="sa" />
+            <property name="javax.persistence.jdbc.password" value="" />
+
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.hbm2ddl.auto" value="create" />
+        </properties>
+
+    </persistence-unit>
+
+</persistence>
