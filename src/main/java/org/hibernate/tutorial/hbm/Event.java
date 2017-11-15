@@ -25,12 +25,18 @@ package org.hibernate.tutorial.hbm;
 
 import java.util.Date;
 
+/**
+ * entity class for this tutorial
+ */
 public class Event {
 	private Long id;
 
 	private String title;
 	private Date date;
 
+	/**
+	 * The no-argument constructor, which is also a JavaBean convention, is a requirement for all persistent classes.
+	 */
 	public Event() {
 		// this form used by Hibernate
 	}

@@ -13,13 +13,14 @@
 
     <session-factory>
 
-        <!-- Database connection settings -->
+        <!-- Database JDBC connection settings -->
         <property name="connection.driver_class">org.h2.Driver</property>
         <property name="connection.url">jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1;MVCC=TRUE</property>
         <property name="connection.username">sa</property>
         <property name="connection.password"/>
 
         <!-- JDBC connection pool (use the built-in) -->
+        <!-- The built-in Hibernate connection pool is in no way intended for production use. It lacks several features found on production-ready connection pools. -->
         <property name="connection.pool_size">1</property>
 
         <!-- SQL dialect -->
@@ -35,11 +36,15 @@
         <property name="hbm2ddl.auto">create</property>
 
         <!--
-            In the official tutorial, the Event.hbm.xml mapping config is put under test/java/org/hibernate/tutorial/hbm/Event.hbm.xml.
-            However, MetadataSources( registry ).buildMetadata() cannot locate Event.hbm.xml if the mapping is set as below
+            In the official tutorial, the Event.hbm.xml mapping config file is put under test/java/org/hibernate/tutorial/hbm/Event.hbm.xml.
+            However, when execute the junit test class NativeApiIllustrationTest in IntelliJ, MetadataSources(registry).buildMetadata()
+            cannot locate Event.hbm.xml if the mapping is set as below.
               <mapping resource="org/hibernate/tutorial/hbm/Event.hbm.xml"/>
-            Most likely, this is caused by the maven project structure created by IntelliJ.
-            Hence we move the file to /src/main/resources/Event.hbm.xml and change the mapping config as below.
+            This is because IntelliJ run NativeApiIllustrationTest under classpath /target/classes and /target/test-classes.
+            You can see the IntelliJ java command line with -classpath option in the run output console.
+            Hence we move Event.hbm.xml to /src/main/resources/ or /src/test/resources/, and change the mapping config as below.
+            By this mean, once the project is built, the resource files will be copied to /target/classes or /target/test-classes.
+            Then java.lang.ClassLoader can lookup the mapping config file.
         -->
         <mapping resource="Event.hbm.xml"/>
 

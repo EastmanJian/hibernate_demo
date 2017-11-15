@@ -45,19 +45,29 @@ public class NativeApiIllustrationTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		System.out.println("setUp()");
-		// A SessionFactory is set up once for an application!
 		final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-				.configure() // configures settings from hibernate.cfg.xml
+				.configure() // Configures settings from resources/hibernate.cfg.xml by default.
+				             // You can specify the config file name as the parameter if you don't want to use the default name.
+				             // At runtime, 'hibernate.properties not found' will prompt, but StandardServiceRegistryBuilder
+							 // still looks for hibernate.cfg.xml if hibernate.properties is not found
 				.build();
 		System.out.println("registry=" + registry);
 		try {
+			// Using the StandardServiceRegistry we create the org.hibernate.boot.MetadataSources which is the start point
+			// for telling Hibernate about your domain model.
+			// The buildMetadata() returns an org.hibernate.boot.Metadata object, which represents the complete, partially
+			// validated view of the application domain model which the SessionFactory will be based on. This method loads
+			// the Hibernate mapping file (Event.hbm.xml in this example), which is defined in hibernate.cfg.xml.
+			// The SessionFactory is a thread-safe object that is instantiated once to serve the entire application.
+			// The SessionFactory acts as a factory for org.hibernate.Session instances, which should be thought of as a
+			// corollary to a "unit of work".
 			sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
 			System.out.println("setUp() sessionFactory =" + sessionFactory);
 		}
 		catch (Exception e) {
-			// The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
-			// so destroy it manually.
+			//add this to print the err stack trace in case any exception creating sessionFactory. e.g. config file path issue
 			e.printStackTrace();
+			// The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory so destroy it manually.
 			StandardServiceRegistryBuilder.destroy( registry );
 		}
 	}
@@ -72,7 +82,7 @@ public class NativeApiIllustrationTest extends TestCase {
 	@SuppressWarnings("unchecked")
 	public void testBasicUsage() {
 		System.out.println("testBasicUsage() sessionFactory=" + sessionFactory);
-		// create a couple of events...
+		/* create a couple of events... */
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		session.save( new Event( "Our very first event!", new Date() ) );
@@ -80,9 +90,12 @@ public class NativeApiIllustrationTest extends TestCase {
 		session.getTransaction().commit();
 		session.close();
 
-		// now lets pull events from the database and list them
+		/* now lets pull events from the database and list them  */
 		session = sessionFactory.openSession();
 		session.beginTransaction();
+		//Here we see an example of the Hibernate Query Language (HQL) to load all existing Event objects from the
+		//database by generating the appropriate SELECT SQL, sending it to the database and populating Event objects
+		//with the result set data.
 		List result = session.createQuery( "from Event" ).list();
 		for ( Event event : (List<Event>) result ) {
 			System.out.println( "Event (" + event.getDate() + ") : " + event.getTitle() );
