@@ -18,7 +18,7 @@
             Persistence unit for the JPA tutorial of the Hibernate Getting Started Guide
         </description>
 
-        <!-- the <class/> element functions the same as we saw the <mapping/> in The Hibernate configuration file.-->
+        <!-- The <class/> element functions the same as we saw the <mapping/> in the Hibernate configuration file.-->
         <class>org.hibernate.tutorial.em.Event</class>
 
         <properties>

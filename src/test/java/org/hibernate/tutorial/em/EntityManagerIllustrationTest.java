@@ -55,6 +55,7 @@ public class EntityManagerIllustrationTest extends TestCase {
 		// create a couple of events...
 		// Similar to org.hibernate.Session, but the javax.persistence.EntityManager interface is used instead.
 		// JPA calls this operation "persist" instead of "save".
+		// Note that EntityManager is provided in hibernate-jpa-2.1-api-1.0.0.Final.jar
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
 		entityManager.persist( new Event( "Our very first event!", new Date() ) );
