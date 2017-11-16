@@ -13,10 +13,12 @@
       persistence.xml files should provide a unique name for each "persistence unit". Applications use this name to
       reference the configuration when obtaining an javax.persistence.EntityManagerFactory reference.
     -->
+    <!-- This persistence-unit is for the JPA with Hibernate demo -->
     <persistence-unit name="org.hibernate.tutorial.jpa">
         <description>
             Persistence unit for the JPA tutorial of the Hibernate Getting Started Guide
         </description>
+
 
         <!-- The <class/> element functions the same as we saw the <mapping/> in the Hibernate configuration file.-->
         <class>org.hibernate.tutorial.em.Event</class>
@@ -34,7 +36,26 @@
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.hbm2ddl.auto" value="create" />
         </properties>
-
     </persistence-unit>
+
+    <!-- This persistence-unit is for the Hibernate Enver API demo -->
+    <persistence-unit name="org.hibernate.tutorial.envers">
+        <description>
+            Persistence unit for the Envers tutorial of the Hibernate Getting Started Guide
+        </description>
+
+        <class>org.hibernate.tutorial.envers.Event</class>
+
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1;MVCC=TRUE" />
+            <property name="javax.persistence.jdbc.user" value="sa" />
+            <property name="javax.persistence.jdbc.password" value="" />
+
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.hbm2ddl.auto" value="create" />
+        </properties>
+    </persistence-unit>
+
 
 </persistence>
